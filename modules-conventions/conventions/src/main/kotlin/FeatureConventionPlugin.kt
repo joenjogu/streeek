@@ -1,5 +1,4 @@
 import com.android.build.gradle.LibraryExtension
-import extensions.api
 import extensions.getBundle
 import extensions.getLibrary
 import extensions.implementation
@@ -12,20 +11,12 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
-/**
- * PROJECT : Template
- * AUTHOR  : mambo
- * EMAIL   : mambobryan@gmail.com
- * DATE    : Wed 07 February 2024
- * TIME    : 1:00 pm
- */
-
 class FeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
                 apply(AndroidConvention.library)
-                apply(AndroidConvention.hilt)
+                apply(AndroidConvention.koin)
                 apply(AndroidConvention.Compose.library)
             }
             extensions.configure<LibraryExtension> {
@@ -49,8 +40,6 @@ class FeatureConventionPlugin : Plugin<Project> {
                 testImplementation(libs.getLibrary("kotlinx-coroutines-test"))
                 // voyager
                 implementation(libs.getBundle("voyager"))
-                // saket
-                implementation(libs.getBundle("saket"))
             }
         }
     }

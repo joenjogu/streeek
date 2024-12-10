@@ -1,11 +1,3 @@
-/**
- * PROJECT : Template
- * AUTHOR  : mambo
- * EMAIL   : mambobryan@gmail.com
- * DATE    : Wed 07 February 2024
- * TIME    : 1:00 pm
- */
-
 object AndroidModules {
 
     object Ui {

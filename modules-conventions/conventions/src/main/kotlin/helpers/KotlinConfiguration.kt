@@ -7,14 +7,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.provideDelegate
 
-/**
- * PROJECT : Template
- * AUTHOR  : mambo
- * EMAIL   : mambobryan@gmail.com
- * DATE    : Wed 07 February 2024
- * TIME    : 1:00 pm
- */
-
 internal fun Project.configureKotlinAndroid(
     extension: CommonExtension<*, *, *, *, *>,
 ) {
@@ -24,8 +16,8 @@ internal fun Project.configureKotlinAndroid(
             minSdk = AndroidSdk.minimumSdk
         }
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
         buildFeatures {
             buildConfig = true
@@ -39,7 +31,7 @@ internal fun Project.configureKotlinAndroid(
                 "-opt-in=kotlinx.coroutines.FlowPreview",
                 "-opt-in=kotlin.Experimental",
             )
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
     }
 }

@@ -9,7 +9,7 @@ repositories {
     gradlePluginPortal()
 }
 
-group = "com.bizyback.convention"
+group = "com.bizilabs.convention"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -23,32 +23,32 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("hilt-convention") {
-            id = "bizyback.convention.hilt"
-            implementationClass = "HiltConventionPlugin"
+        register("koin-convention") {
+            id = "bizilabs.convention.koin"
+            implementationClass = "KoinConventionPlugin"
         }
         register("application-convention") {
-            id = "bizyback.convention.application"
+            id = "bizilabs.convention.application"
             implementationClass = "ApplicationConventionPlugin"
         }
         register("library-convention") {
-            id = "bizyback.convention.library"
+            id = "bizilabs.convention.library"
             implementationClass = "LibraryConventionPlugin"
         }
         register("compose-application-convention") {
-            id = "bizyback.convention.compose.application"
+            id = "bizilabs.convention.compose.application"
             implementationClass = "ComposeApplicationConventionPlugin"
         }
         register("compose-library-convention") {
-            id = "bizyback.convention.compose.library"
+            id = "bizilabs.convention.compose.library"
             implementationClass = "ComposeLibraryConventionPlugin"
         }
         register("module-convention") {
-            id = "bizyback.convention.module"
+            id = "bizilabs.convention.module"
             implementationClass = "ModuleConventionPlugin"
         }
         register("feature-convention") {
-            id = "bizyback.convention.feature"
+            id = "bizilabs.convention.feature"
             implementationClass = "FeatureConventionPlugin"
         }
     }

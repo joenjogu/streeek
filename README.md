@@ -1,4 +1,5 @@
-<p align="center"><img width=100% src="/.github/images/template-android.png" alt="Ding Logo"></p>
+<p align="center"><img width=100% src="/.github/images/logo.png" alt="streeek"></p>
 
-# Template (Android)
-This is a simple android template 
+# Streeek
+GitHub contribution streak app gamified.  
+An app that you login with your GitHub account and it monitors your daily contributions, reminds you to contribute and also adds gamification. 

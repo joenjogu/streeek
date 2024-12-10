@@ -1,45 +1,40 @@
 [versions]
 # gradle plugins
 gradle-plugin-android = "8.2.2"
-gradle-plugin-firebase-crashlytics = "2.9.9"
+gradle-plugin-firebase-crashlytics = "3.0.2"
 gradle-plugin-firebase-performance = "1.4.2"
 gradle-plugin-firebase-app-distribution = "4.0.0"
-gradle-plugin-google-services = "4.4.0"
+gradle-plugin-google-services = "4.4.2"
 
 # kotlin libraries
-kotlin = "1.9.10"
+kotlin = "2.0.21"
 # Kotlinx
-kotlinx-coroutines = "1.7.3"
-kotlinx-serialization = "1.6.2"
-kotlinx-datetime = "0.5.0"
-ktor = "2.3.8"
+kotlinx-coroutines = "1.9.0"
+kotlinx-serialization = "1.7.3"
+kotlinx-datetime = "0.6.0"
+ktor = "3.0.0"
 
 # android libraries
 androidx-splash-screen = "1.0.1"
-androidx-core-ktx = "1.12.0"
-androidx-compose-material = "1.6.0"
-androidx-work-manager = "2.9.0"
+androidx-core-ktx = "1.15.0"
+androidx-compose-material = "1.7.5"
+androidx-work-manager = "2.10.0"
 androidx-room = "2.6.1"
-androidx-datastore = "1.0.0"
-androidx-lifecycle-runtime-ktx = "2.7.0"
-androidx-appcompat = "1.6.1"
+androidx-datastore = "1.1.1"
+androidx-lifecycle-runtime-ktx = "2.8.7"
+androidx-appcompat = "1.7.0"
 androidx-palette = "1.0.0"
 androidx-security-crypto = "1.0.0"
 
-# hilt
-androidx-hilt = "1.1.0"
-dagger-hilt = "2.48"
-
 # compose
-compose-bom = "2023.10.01"
-compose-tv-foundation = "1.0.0-alpha10"
-compose-tv-material = "1.0.0-alpha10"
-androidx-activity-compose = "1.8.2"
-kotlin-compose-compiler = "1.5.3"
+compose-bom = "2024.11.00"
+compose-tv-foundation = "1.0.0-alpha11"
+compose-tv-material = "1.0.0"
+androidx-activity-compose = "1.9.3"
 
 # google libraries
-firebase_bom = "32.7.1"
-ksp = "1.9.10-1.0.13" # always match with kotlin version
+firebase_bom = "33.7.0"
+ksp = "2.0.21-1.0.27" # always match with kotlin version
 
 # saket
 saket-swipe = "1.2.0"
@@ -51,19 +46,19 @@ androidx-test-ext-junit = "1.1.5"
 androidx-test-espresso = "3.5.1"
 
 # other libraries
-koin = "3.5.3"
-coil = "2.4.0"
+koin-bom = "4.0.0"
+coil = "2.7.0"
 timber = "5.0.1"
-com-google-android-material-material = "1.11.0"
+com-google-android-material-material = "1.12.0"
 okhttp-bom = "4.12.0"
 voyager = "1.0.0"
-lottie = "6.0.1"
-media3 = "1.2.1"
+lottie = "6.6.0"
+media3 = "1.5.0"
 junit = "4.13.2"
 compose-qr = "1.0.1"
 bcrypt = "0.10.2"
 realm = "1.11.0"
-startup-runtime = "1.1.1"
+startup-runtime = "1.2.0"
 
 [libraries]
 # androidx
@@ -77,12 +72,12 @@ androidx-palette = { group = "androidx.palette", name = "palette-ktx", version.r
 androidx-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "androidx-security-crypto" }
 
-# hilt
-androidx-hilt = { group = "androidx.hilt", name = "hilt-common", version.ref = "androidx-hilt" }
-androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "androidx-hilt" }
-androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "androidx-hilt" }
-dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger-hilt" }
+# koin
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-core-coroutines = { module = "io.insert-koin:koin-core-coroutines" }
+koin-test = { module = "io.insert-koin:koin-test" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 
 # androidx-work-manager
 androidx-work-runtime = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidx-work-manager" }
@@ -156,7 +151,7 @@ voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.
 voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
 voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
-voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 
 # exoplayer
 media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3" }
@@ -185,7 +180,6 @@ androidx-startup-runtime = { group = "androidx.startup", name = "startup-runtime
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle-plugin-android" }
 android-library = { id = "com.android.library", version.ref = "gradle-plugin-android" }
-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -193,6 +187,7 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 firebase-performance = { id = "com.google.firebase.firebase-perf", version.ref = "gradle-plugin-firebase-performance" }
 google-services = { id = "com.google.gms.google-services", version.ref = "gradle-plugin-google-services" }
 realm = { id = "io.realm.kotlin", version.ref = "realm" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]
 android = [
@@ -205,6 +200,7 @@ compose = [
     "compose-lifecycle-livedata-ktx", "compose-lifecycle-runtime", "compose-lifecycle-viewModel",
     "compose-qr-code"
 ]
+koin = ["koin-core", "koin-core-coroutines"]
 firebase = [
     "firebase-messaging", "firebase-crashlytics", "firebase-analytics",
     "firebase-performance", "firebase-config", "firebase-inappmessagging",
@@ -212,14 +208,13 @@ firebase = [
 ]
 voyager = [
     "voyager-navigator", "voyager-tabNavigator", "voyager-bottomSheetNavigator",
-    "voyager-transitions", "voyager-hilt"
+    "voyager-transitions", "voyager-koin"
 ]
 ktor = [
     "ktor-client-core", "ktor-client-okhttp", "ktor-logging", "ktor-content-negotiation",
     "ktor-serialization-json",
 ]
-okhttp = [ "okhttp", "okhttp-logging" ]
+okhttp = ["okhttp", "okhttp-logging"]
 coil = ["coil-kt-compose", "coil-kt-svg", "coil-kt"]
 media3 = ["media3-exoplayer", "media3-ui", "media3-exoplayer-dash", "media3-exoplayer-hls"]
-hilt = ["androidx-hilt", "dagger-hilt"]
 saket = ["saket-swipe", "saket-cascade"]

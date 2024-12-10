@@ -6,14 +6,6 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
-/**
- * PROJECT : Template
- * AUTHOR  : mambo
- * EMAIL   : mambobryan@gmail.com
- * DATE    : Wed 07 February 2024
- * TIME    : 1:00 pm
- */
-
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *>,
 ) {
@@ -24,10 +16,6 @@ internal fun Project.configureAndroidCompose(
 
         buildFeatures {
             compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.getVersion("kotlin-compose-compiler")
         }
 
         kotlinOptions {

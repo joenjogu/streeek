@@ -1,10 +1,10 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("bizyback.convention.module")
+    id("bizilabs.convention.module")
 }
 
 android {
-    namespace = "com.bizyback.lib.data"
+    namespace = "com.bizilabs.streeek.lib.data"
 }
 
 dependencies {

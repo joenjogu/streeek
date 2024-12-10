@@ -14,14 +14,6 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.kotlin
 
-/**
- * PROJECT : Template
- * AUTHOR  : mambo
- * EMAIL   : mambobryan@gmail.com
- * DATE    : Wed 07 February 2024
- * TIME    : 1:00 pm
- */
-
 class ApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {

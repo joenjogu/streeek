@@ -1,11 +1,11 @@
 plugins {
-    id("bizyback.convention.library")
-    id("bizyback.convention.hilt")
-    id("bizyback.convention.compose.library")
+    id("bizilabs.convention.library")
+    id("bizilabs.convention.koin")
+    id("bizilabs.convention.compose.library")
 }
 
 android {
-    namespace = "com.bizyback.lib.presentation"
+    namespace = "com.bizilabs.streeek.lib.presentation"
 }
 
 dependencies {

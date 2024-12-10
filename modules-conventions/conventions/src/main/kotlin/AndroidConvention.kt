@@ -1,23 +1,15 @@
-/**
- * PROJECT : Template
- * AUTHOR  : mambo
- * EMAIL   : mambobryan@gmail.com
- * DATE    : Wed 07 February 2024
- * TIME    : 1:00 pm
- */
-
 object AndroidConvention {
     // parent
-    val application = "bizyback.convention.application"
-    val library = "bizyback.convention.library"
-    val hilt = "bizyback.convention.hilt"
+    val application = "bizilabs.convention.application"
+    val library = "bizilabs.convention.library"
+    val koin = "bizilabs.convention.koin"
 
     // child
-    val module = "bizyback.convention.module"
-    val feature = "bizyback.convention.feature"
+    val module = "bizilabs.convention.module"
+    val feature = "bizilabs.convention.feature"
 
     object Compose {
-        const val application = "bizyback.convention.compose.application"
-        const val library = "bizyback.convention.compose.library"
+        const val application = "bizilabs.convention.compose.application"
+        const val library = "bizilabs.convention.compose.library"
     }
 }
