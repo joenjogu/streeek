@@ -4,6 +4,7 @@
 /conventions/.gradle
 
 # Idea
+.kotlin
 .idea
 /.idea
 

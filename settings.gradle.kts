@@ -44,4 +44,4 @@ include(":modules-ui:resources")
 include(":modules-ui:design")
 include(":modules-ui:common")
 
- 
+include(":modules-app:streeek")

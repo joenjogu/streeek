@@ -33,7 +33,6 @@ class ApplicationConventionPlugin : Plugin<Project> {
                 implementation(project(AndroidModules.Data.data))
 
                 // work manager
-                implementation(libs.getLibrary("androidx-hilt-work"))
                 implementation(libs.getLibrary("androidx-work-runtime"))
                 implementation(libs.getLibrary("androidx-work-testing"))
             }
