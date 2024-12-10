@@ -8,9 +8,10 @@
 /.idea
 
 # Build
+*/build/*
 /build
-/conventions/build
-/conventions/build/*
+modules-conventions/conventions/build
+modules-conventions/conventions/build/*
 
 # Properties
 local.properties
