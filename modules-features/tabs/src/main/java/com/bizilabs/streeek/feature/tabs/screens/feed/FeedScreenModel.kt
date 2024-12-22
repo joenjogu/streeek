@@ -22,7 +22,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.dsl.module
 
-val FeedModule = module {
+internal val FeedModule = module {
     factory {
         FeedScreenModel(
             context = get(),

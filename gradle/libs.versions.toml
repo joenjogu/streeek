@@ -63,6 +63,7 @@ supabase-bom = "3.0.3"
 kalendar = "1.3.2"
 calendar = "2.6.1"
 chucker = "4.1.0"
+foundation-android = "1.7.5"
 
 [libraries]
 # androidx
@@ -196,6 +197,7 @@ bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "bcrypt" }
 realm = { module = "io.realm.kotlin:library-base", version.ref = "realm" }
 kalendar = { module = "com.himanshoe:kalendar", version.ref = "kalendar" }
 calendar = { module = "com.kizitonwose.calendar:compose-multiplatform", version.ref = "calendar" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundation-android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle-plugin-android" }

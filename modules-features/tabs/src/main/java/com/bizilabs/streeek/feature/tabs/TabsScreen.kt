@@ -3,7 +3,6 @@ package com.bizilabs.streeek.feature.tabs
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -21,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.registry.screenModule
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import com.bizilabs.streeek.feature.tabs.screens.AchievementsScreen
+import com.bizilabs.streeek.feature.tabs.screens.achievements.AchievementsScreen
 import com.bizilabs.streeek.feature.tabs.screens.TeamsScreen
 import com.bizilabs.streeek.feature.tabs.screens.feed.FeedScreen
 import com.bizilabs.streeek.lib.common.navigation.SharedScreen

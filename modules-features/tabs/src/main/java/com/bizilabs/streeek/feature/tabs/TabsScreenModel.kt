@@ -11,6 +11,7 @@ import androidx.compose.material.icons.rounded.PeopleAlt
 import androidx.compose.ui.graphics.vector.ImageVector
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.bizilabs.streeek.feature.tabs.screens.achievements.AchievementsModule
 import com.bizilabs.streeek.feature.tabs.screens.feed.FeedModule
 import com.bizilabs.streeek.lib.common.models.FetchState
 import com.bizilabs.streeek.lib.domain.helpers.DataResult
@@ -33,7 +34,7 @@ val tabsModule = module {
             accountRepository = get()
         )
     }
-    includes(FeedModule)
+    includes(FeedModule, AchievementsModule)
 }
 
 enum class Tabs {
