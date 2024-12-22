@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.modulesFeatures.authentication)
     implementation(projects.modulesFeatures.tabs)
     implementation(projects.modulesFeatures.setup)
+    implementation(projects.modulesFeatures.profile)
 
     // splash screen
     implementation(libs.androidx.core.splashscreen)

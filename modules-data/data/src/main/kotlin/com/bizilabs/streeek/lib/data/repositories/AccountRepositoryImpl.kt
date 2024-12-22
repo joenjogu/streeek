@@ -12,6 +12,7 @@ import com.bizilabs.streeek.lib.remote.helpers.NetworkResult
 import com.bizilabs.streeek.lib.remote.models.AccountCreateRequestDTO
 import com.bizilabs.streeek.lib.remote.sources.account.AccountRemoteSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.datetime.Clock
 import timber.log.Timber
@@ -67,6 +68,18 @@ class AccountRepositoryImpl(
                 val account = result.data.toDomain()
                 local.updateAccount(account = account.toCache())
                 DataResult.Success(result.data.toDomain())
+            }
+        }
+    }
+
+    override suspend fun syncAccount(): DataResult<Boolean> {
+        val id = account.first()?.id ?: return DataResult.Error("Account not found")
+        return when (val result = remote.getAccount(id = id)) {
+            is NetworkResult.Failure -> DataResult.Error(message = result.exception.localizedMessage)
+            is NetworkResult.Success -> {
+                val account = result.data.toDomain()
+                local.updateAccount(account = account.toCache())
+                DataResult.Success(true)
             }
         }
     }

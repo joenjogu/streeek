@@ -48,9 +48,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
+import com.bizilabs.streeek.lib.common.navigation.SharedScreen
 import com.bizilabs.streeek.lib.design.components.SafiCenteredColumn
 import com.bizilabs.streeek.lib.design.components.SafiCenteredRow
 import com.bizilabs.streeek.lib.design.components.SafiInfoSection
@@ -67,16 +70,23 @@ object FeedScreen : Screen {
     @Composable
     override fun Content() {
         SetupStatusBarColor(color = MaterialTheme.colorScheme.surface)
+        val navigator = LocalNavigator.current
         val screenModel: FeedScreenModel = getScreenModel()
         val state by screenModel.state.collectAsStateWithLifecycle()
         val date by screenModel.date.collectAsStateWithLifecycle()
         val contributions by screenModel.contributions.collectAsStateWithLifecycle(emptyList())
+
+        val profileScreen = rememberScreen(SharedScreen.Profile)
+
         FeedScreenContent(
             state = state,
             date = date,
             contributions = contributions,
             onClickDate = screenModel::onClickDate,
-            onRefreshContributions = screenModel::onRefreshContributions
+            onRefreshContributions = screenModel::onRefreshContributions,
+            onClickProfile = {
+                navigator?.push(profileScreen)
+            }
         )
     }
 }
@@ -88,7 +98,8 @@ fun FeedScreenContent(
     date: LocalDate,
     contributions: List<ContributionDomain>,
     onClickDate: (LocalDate) -> Unit,
-    onRefreshContributions: () -> Unit
+    onRefreshContributions: () -> Unit,
+    onClickProfile: () -> Unit,
 ) {
 
     val pullRefreshState =
@@ -98,7 +109,7 @@ fun FeedScreenContent(
         topBar = {
             Surface(shadowElevation = 2.dp) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    FeedHeader(selectedDate = date, state = state)
+                    FeedHeader(selectedDate = date, state = state, onClickProfile = onClickProfile)
                     WeekCalendar(
                         dayContent = { weekDay ->
                             CalendarItem(
@@ -276,7 +287,8 @@ private fun CalendarItem(
 @Composable
 private fun FeedHeader(
     selectedDate: LocalDate,
-    state: FeedScreenState
+    state: FeedScreenState,
+    onClickProfile: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -308,7 +320,7 @@ private fun FeedHeader(
 
         Card(
             modifier = Modifier.padding(16.dp),
-            onClick = {},
+            onClick = onClickProfile,
             shape = RoundedCornerShape(20),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground)
         ) {

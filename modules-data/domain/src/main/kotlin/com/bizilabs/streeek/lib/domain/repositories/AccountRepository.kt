@@ -15,4 +15,5 @@ interface AccountRepository {
         avatarUrl: String
     ): DataResult<AccountDomain>
     suspend fun getAccount(id: Long): DataResult<AccountDomain>
+    suspend fun syncAccount(): DataResult<Boolean>
 }

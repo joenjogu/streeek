@@ -7,4 +7,5 @@ sealed class SharedScreen : ScreenProvider {
     object Authentication : SharedScreen()
     object Tabs : SharedScreen()
     object Setup : SharedScreen()
+    object Profile : SharedScreen()
 }
