@@ -71,7 +71,7 @@ data class PullRequestEventDTO(
     val action: String,
     @SerialName("pull_request")
     val pullRequest: MinPullRequestDTO,
-    val reason: String?,
+    val reason: String? = null,
 ) : EventPayloadDTO
 
 @Serializable
