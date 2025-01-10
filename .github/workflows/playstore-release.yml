@@ -13,6 +13,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # Grant write access to repository contents
+      actions: write    # Example: Grant read access to actions (optional, can be removed if unnecessary)
+      issues: write    # Example: Grant write access to issues
+      pull-requests: write # Grant write access to pull requests (if needed)
+
     steps:
       - name: Checkout Project Sources
         uses: actions/checkout@v4
