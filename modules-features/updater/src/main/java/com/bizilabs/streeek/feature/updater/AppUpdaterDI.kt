@@ -1,5 +1,6 @@
 package com.bizilabs.streeek.feature.updater
 
+import InAppUpdateManager
 import android.app.Activity
 import org.koin.dsl.module
 

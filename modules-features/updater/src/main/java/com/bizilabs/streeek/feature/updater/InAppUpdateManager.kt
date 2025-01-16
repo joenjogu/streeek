@@ -1,8 +1,7 @@
-package com.bizilabs.streeek.feature.updater
-
 import android.app.Activity
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
@@ -40,13 +39,13 @@ class InAppUpdateManager(
                 appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) -> {
                     log("Immediate update available. Starting update...")
-                    startImmediateUpdate(appUpdateInfo)
+                    startUpdateFlow(appUpdateInfo, AppUpdateType.IMMEDIATE)
                 }
 
                 appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                     appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> {
                     log("Flexible update available. Starting update...")
-                    startFlexibleUpdate(appUpdateInfo)
+                    startUpdateFlow(appUpdateInfo, AppUpdateType.FLEXIBLE)
                 }
 
                 else -> {
@@ -80,29 +79,22 @@ class InAppUpdateManager(
         log("Listener unregistered and resources cleaned up.")
     }
 
-    private fun startImmediateUpdate(appUpdateInfo: com.google.android.play.core.appupdate.AppUpdateInfo) {
+    /**
+     * Starts the update flow with the specified update type.
+     */
+    private fun startUpdateFlow(
+        appUpdateInfo: com.google.android.play.core.appupdate.AppUpdateInfo,
+        updateType: Int,
+    ) {
         try {
             appUpdateManager.startUpdateFlowForResult(
                 appUpdateInfo,
-                AppUpdateType.IMMEDIATE,
                 activity,
+                AppUpdateOptions.defaultOptions(updateType),
                 UPDATE_REQUEST_CODE,
             )
         } catch (exception: Exception) {
-            logError("Failed to start immediate update: ${exception.localizedMessage}")
-        }
-    }
-
-    private fun startFlexibleUpdate(appUpdateInfo: com.google.android.play.core.appupdate.AppUpdateInfo) {
-        try {
-            appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.FLEXIBLE,
-                activity,
-                UPDATE_REQUEST_CODE,
-            )
-        } catch (exception: Exception) {
-            logError("Failed to start flexible update: ${exception.localizedMessage}")
+            logError("Failed to start update (type: $updateType): ${exception.localizedMessage}")
         }
     }
 
@@ -112,7 +104,6 @@ class InAppUpdateManager(
                 log("Update has been downloaded. Prompting user to complete the update.")
                 appUpdateManager.completeUpdate()
             }
-
             InstallStatus.INSTALLED -> log("Update installed successfully.")
             InstallStatus.FAILED -> logError("Update installation failed.")
             else -> log("Update state: ${state.installStatus()}")
