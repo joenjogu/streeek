@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,14 +46,17 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.bizilabs.streeek.lib.common.navigation.SharedScreen
 import com.bizilabs.streeek.lib.design.components.SafiCenteredColumn
 import com.bizilabs.streeek.lib.design.components.SafiCenteredRow
 import com.bizilabs.streeek.lib.design.components.SafiProfileArc
 import com.bizilabs.streeek.lib.design.components.SafiTopBarHeader
+import com.bizilabs.streeek.lib.design.components.shimmerEffect
 import com.bizilabs.streeek.lib.design.helpers.onSuccess
 import com.bizilabs.streeek.lib.design.helpers.success
 import com.bizilabs.streeek.lib.domain.extensions.asRank
+import timber.log.Timber
 
 object AchievementsScreen : Screen {
     @Composable
@@ -66,6 +70,7 @@ object AchievementsScreen : Screen {
             onClickTab = screenModel::onClickTab,
             onClickRefreshProfile = screenModel::onClickRefreshProfile,
             onClickAccount = {
+                Timber.tag("AchievementsScreen").d("onClickAccount")
                 navigator?.push(profileScreen)
             },
         )
@@ -89,9 +94,9 @@ fun AchievementsScreenContent(
     }) { paddingValues ->
         SafiCenteredColumn(
             modifier =
-                Modifier
-                    .padding(top = paddingValues.calculateTopPadding())
-                    .fillMaxSize(),
+            Modifier
+                .padding(top = paddingValues.calculateTopPadding())
+                .fillMaxSize(),
         ) {
             AnimatedContent(targetState = state.tab, label = "animate achievements") { tab ->
                 when (tab) {
@@ -124,9 +129,9 @@ fun AchievementScreenHeader(
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -151,9 +156,9 @@ fun AchievementScreenHeader(
             Spacer(modifier = Modifier.padding(8.dp))
             SafiCenteredColumn(
                 modifier =
-                    Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
+                Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
             ) {
                 state.account?.let { account ->
                     SafiProfileArc(
@@ -162,15 +167,22 @@ fun AchievementScreenHeader(
                         modifier = Modifier.size(148.dp),
                         tint = MaterialTheme.colorScheme.primary,
                     ) {
-                        AsyncImage(
+                        SubcomposeAsyncImage(
                             modifier =
-                                Modifier
-                                    .size(128.dp)
-                                    .clip(CircleShape)
-                                    .background(Color.White),
+                            Modifier
+                                .size(128.dp)
+                                .clip(CircleShape)
+                                .background(Color.White),
                             model = account.avatarUrl,
                             contentDescription = "user avatar url",
                             contentScale = ContentScale.Crop,
+                            loading = {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .shimmerEffect()
+                                )
+                            }
                         )
                     }
                     Text(
@@ -185,13 +197,13 @@ fun AchievementScreenHeader(
                     )
                     Text(
                         text =
-                            buildString {
-                                append("LV.")
-                                append(account.level?.number)
-                                append(" | ")
-                                append(account.points)
-                                append(" EXP")
-                            },
+                        buildString {
+                            append("LV.")
+                            append(account.level?.number)
+                            append(" | ")
+                            append(account.points)
+                            append(" EXP")
+                        },
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                     )
@@ -289,14 +301,14 @@ fun AchievementsLevelsScreenSection(
                         ) {
                             Card(
                                 modifier =
-                                    Modifier
-                                        .padding(8.dp)
-                                        .fillMaxWidth(),
+                                Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth(),
                                 colors =
-                                    CardDefaults.cardColors(
-                                        containerColor = containerColor,
-                                        contentColor = contentColor,
-                                    ),
+                                CardDefaults.cardColors(
+                                    containerColor = containerColor,
+                                    contentColor = contentColor,
+                                ),
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(
