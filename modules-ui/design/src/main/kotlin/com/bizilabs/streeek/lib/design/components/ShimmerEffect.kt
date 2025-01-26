@@ -28,23 +28,26 @@ fun Modifier.shimmerEffect(): Modifier {
     val startOffsetX by transition.animateFloat(
         initialValue = -2 * size.width.toFloat(),
         targetValue = 2 * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(1000)
-        ), label = ""
+        animationSpec =
+            infiniteRepeatable(
+                animation = tween(1000),
+            ),
+        label = "",
     )
 
     return background(
-        brush = Brush.linearGradient(
-            colors = listOf(
-                shimmerColor.copy(0.1f),
-                shimmerColor.copy(0.7f),
-                shimmerColor.copy(0.1f),
+        brush =
+            Brush.linearGradient(
+                colors =
+                    listOf(
+                        shimmerColor.copy(0.1f),
+                        shimmerColor.copy(0.7f),
+                        shimmerColor.copy(0.1f),
+                    ),
+                start = Offset(startOffsetX, 0f),
+                end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat()),
             ),
-            start = Offset(startOffsetX, 0f),
-            end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
-        )
     ).onGloballyPositioned {
         size = it.size
     }
 }
-

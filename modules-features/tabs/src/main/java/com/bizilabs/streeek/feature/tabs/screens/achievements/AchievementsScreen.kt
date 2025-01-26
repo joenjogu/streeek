@@ -45,7 +45,6 @@ import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.bizilabs.streeek.lib.common.navigation.SharedScreen
 import com.bizilabs.streeek.lib.design.components.SafiCenteredColumn
@@ -94,9 +93,9 @@ fun AchievementsScreenContent(
     }) { paddingValues ->
         SafiCenteredColumn(
             modifier =
-            Modifier
-                .padding(top = paddingValues.calculateTopPadding())
-                .fillMaxSize(),
+                Modifier
+                    .padding(top = paddingValues.calculateTopPadding())
+                    .fillMaxSize(),
         ) {
             AnimatedContent(targetState = state.tab, label = "animate achievements") { tab ->
                 when (tab) {
@@ -129,9 +128,9 @@ fun AchievementScreenHeader(
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -156,9 +155,9 @@ fun AchievementScreenHeader(
             Spacer(modifier = Modifier.padding(8.dp))
             SafiCenteredColumn(
                 modifier =
-                Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
+                    Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
             ) {
                 state.account?.let { account ->
                     SafiProfileArc(
@@ -169,20 +168,21 @@ fun AchievementScreenHeader(
                     ) {
                         SubcomposeAsyncImage(
                             modifier =
-                            Modifier
-                                .size(128.dp)
-                                .clip(CircleShape)
-                                .background(Color.White),
+                                Modifier
+                                    .size(128.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.White),
                             model = account.avatarUrl,
                             contentDescription = "user avatar url",
                             contentScale = ContentScale.Crop,
                             loading = {
                                 Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .shimmerEffect()
+                                    modifier =
+                                        Modifier
+                                            .fillMaxSize()
+                                            .shimmerEffect(),
                                 )
-                            }
+                            },
                         )
                     }
                     Text(
@@ -197,13 +197,13 @@ fun AchievementScreenHeader(
                     )
                     Text(
                         text =
-                        buildString {
-                            append("LV.")
-                            append(account.level?.number)
-                            append(" | ")
-                            append(account.points)
-                            append(" EXP")
-                        },
+                            buildString {
+                                append("LV.")
+                                append(account.level?.number)
+                                append(" | ")
+                                append(account.points)
+                                append(" EXP")
+                            },
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
                     )
@@ -301,14 +301,14 @@ fun AchievementsLevelsScreenSection(
                         ) {
                             Card(
                                 modifier =
-                                Modifier
-                                    .padding(8.dp)
-                                    .fillMaxWidth(),
+                                    Modifier
+                                        .padding(8.dp)
+                                        .fillMaxWidth(),
                                 colors =
-                                CardDefaults.cardColors(
-                                    containerColor = containerColor,
-                                    contentColor = contentColor,
-                                ),
+                                    CardDefaults.cardColors(
+                                        containerColor = containerColor,
+                                        contentColor = contentColor,
+                                    ),
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(

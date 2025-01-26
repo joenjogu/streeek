@@ -1,6 +1,5 @@
 package com.bizilabs.streeek.feature.profile
 
-import android.R.attr.onClick
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.Orientation
@@ -45,9 +44,7 @@ import cafe.adriel.voyager.core.registry.screenModule
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
 import com.bizilabs.streeek.lib.common.navigation.SharedScreen
 import com.bizilabs.streeek.lib.design.components.DialogState
 import com.bizilabs.streeek.lib.design.components.SafiBottomDialog
@@ -102,10 +99,10 @@ fun ProfileScreenContent(
     if (state.shouldConfirmLogout) {
         SafiBottomDialog(
             state =
-            DialogState.Info(
-                title = "Logout",
-                message = "Are you sure you want to logout?",
-            ),
+                DialogState.Info(
+                    title = "Logout",
+                    message = "Are you sure you want to logout?",
+                ),
             onClickDismiss = { onClickConfirmLogout(false) },
         ) {
             Button(onClick = { onClickConfirmLogout(true) }) {
@@ -131,15 +128,15 @@ fun ProfileScreenContent(
     }) { innerPadding ->
         Column(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
         ) {
             Column(
                 modifier =
-                Modifier
-                    .weight(1f)
-                    .scrollable(state = scrollState, orientation = Orientation.Vertical),
+                    Modifier
+                        .weight(1f)
+                        .scrollable(state = scrollState, orientation = Orientation.Vertical),
             ) {
                 SafiCenteredColumn(modifier = Modifier.fillMaxWidth()) {
                     Card(
@@ -150,24 +147,25 @@ fun ProfileScreenContent(
                     ) {
                         SubcomposeAsyncImage(
                             modifier =
-                            Modifier
-                                .size(150.dp)
-                                .clip(RoundedCornerShape(50)),
+                                Modifier
+                                    .size(150.dp)
+                                    .clip(RoundedCornerShape(50)),
                             model = state.account?.avatarUrl ?: "",
                             contentDescription = "user avatar url",
                             contentScale = ContentScale.Crop,
                             loading = {
                                 Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .shimmerEffect()
+                                    modifier =
+                                        Modifier
+                                            .fillMaxSize()
+                                            .shimmerEffect(),
                                 )
-                            }
+                            },
                         )
                     }
 
                     state.account?.level?.number?.let { number ->
-                        Text(text = "LV.${number}")
+                        Text(text = "LV.$number")
                     }
                     Text(text = state.account?.level?.name ?: "")
 
@@ -180,19 +178,19 @@ fun ProfileScreenContent(
                     )
                     Text(
                         text =
-                        buildString {
-                            append("Joined : ")
-                            append(state.account?.createdAt?.toTimeAgo() ?: "")
-                        },
+                            buildString {
+                                append("Joined : ")
+                                append(state.account?.createdAt?.toTimeAgo() ?: "")
+                            },
                     )
                 }
 
                 ProfileItemComponent(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 16.dp),
                     icon = Icons.Rounded.Feedback,
                     title = "Feedback",
                     message = "For any feedback or suggestions",
@@ -201,10 +199,10 @@ fun ProfileScreenContent(
 
                 ProfileItemComponent(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 16.dp),
                     icon = Icons.Rounded.Bolt,
                     title = "Arcane Knowledge",
                     message = "Learn how to earn experience points (EXP).",
@@ -213,10 +211,10 @@ fun ProfileScreenContent(
 
                 Button(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 24.dp),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 24.dp),
                     onClick = onClickLogout,
                 ) {
                     Text(text = stringResource(SafiStringLabels.LogOut))
@@ -225,9 +223,9 @@ fun ProfileScreenContent(
             Text(
                 text = "${state.versionCode} - v${state.versionName}",
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelMedium,
             )
@@ -247,16 +245,16 @@ private fun ProfileItemComponent(
         modifier = modifier,
         onClick = onClick,
         colors =
-        CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary.copy(0.2f),
-            contentColor = MaterialTheme.colorScheme.onBackground,
-        ),
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary.copy(0.2f),
+                contentColor = MaterialTheme.colorScheme.onBackground,
+            ),
     ) {
         Row(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(modifier = Modifier.weight(1f)) {
