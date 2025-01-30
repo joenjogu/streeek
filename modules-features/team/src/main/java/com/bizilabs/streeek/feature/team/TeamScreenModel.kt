@@ -13,6 +13,7 @@ import androidx.paging.cachedIn
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.bizilabs.streeek.lib.common.components.paging.getPagingDataLoading
+import com.bizilabs.streeek.lib.common.models.FetchListState
 import com.bizilabs.streeek.lib.common.models.FetchState
 import com.bizilabs.streeek.lib.design.components.DialogState
 import com.bizilabs.streeek.lib.domain.helpers.DataResult
@@ -25,12 +26,14 @@ import com.bizilabs.streeek.lib.domain.models.TeamMemberRole
 import com.bizilabs.streeek.lib.domain.models.TeamWithMembersDomain
 import com.bizilabs.streeek.lib.domain.models.asTeamDetails
 import com.bizilabs.streeek.lib.domain.models.sortedByRank
+import com.bizilabs.streeek.lib.domain.models.team.AccountsNotInTeamDomain
 import com.bizilabs.streeek.lib.domain.models.team.CreateTeamInvitationDomain
 import com.bizilabs.streeek.lib.domain.models.team.JoinTeamInvitationDomain
 import com.bizilabs.streeek.lib.domain.models.team.TeamAccountJoinRequestDomain
 import com.bizilabs.streeek.lib.domain.models.team.TeamInvitationDomain
 import com.bizilabs.streeek.lib.domain.repositories.TeamInvitationCodeRepository
 import com.bizilabs.streeek.lib.domain.repositories.TeamRepository
+import com.bizilabs.streeek.lib.domain.repositories.team.TeamMemberInvitationRepository
 import com.bizilabs.streeek.lib.domain.repositories.team.TeamRequestRepository
 import com.bizilabs.streeek.lib.domain.workers.startImmediateSyncTeamsWork
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -53,6 +56,7 @@ val FeatureTeamModule =
                 context = get(),
                 teamRepository = get(),
                 teamInvitationCodeRepository = get(),
+                teamMemberInvitationRepository = get(),
                 teamRequestRepository = get(),
             )
         }
@@ -121,6 +125,11 @@ data class ProcessRequestDomain(
     val fetchState: FetchState<Boolean> = FetchState.Loading,
 )
 
+data class InviteAccountState(
+    val accountId: Long,
+    val inviteState: FetchState<Boolean> = FetchState.Loading,
+)
+
 data class TeamScreenState(
     val isSyncing: Boolean = false,
     val isEditing: Boolean = false,
@@ -150,6 +159,10 @@ data class TeamScreenState(
     val processingSingleRequestsState: Map<Long, FetchState<Boolean>> = emptyMap(),
     val processingMultipleRequestsState: ProcessRequestDomain? = null,
     val processedRequests: Map<String, List<Long>> = emptyMap(),
+    val accountsNotInTeamState: FetchListState<JoinTeamInvitationDomain>? = null,
+    val inviteAccountState: InviteAccountState? = null,
+    val accountsInvitedIds: List<Long> = emptyList(),
+    val searchParam: String = "",
 ) {
     val isManagingTeam: Boolean
         get() = isEditing || teamId == null
@@ -193,6 +206,7 @@ class TeamScreenModel(
     private val context: Context,
     private val teamRepository: TeamRepository,
     private val teamInvitationCodeRepository: TeamInvitationCodeRepository,
+    private val teamMemberInvitationRepository: TeamMemberInvitationRepository,
     private val teamRequestRepository: TeamRequestRepository,
 ) : StateScreenModel<TeamScreenState>(TeamScreenState()) {
     private var _pages = MutableStateFlow(getPagingDataLoading<TeamMemberDomain>())
@@ -202,6 +216,11 @@ class TeamScreenModel(
         MutableStateFlow(getPagingDataLoading<TeamAccountJoinRequestDomain>()).asStateFlow()
     val requests: Flow<PagingData<TeamAccountJoinRequestDomain>>
         get() = _requests
+
+    private var _accountsNotInTeam: Flow<PagingData<AccountsNotInTeamDomain>> =
+        MutableStateFlow(getPagingDataLoading<AccountsNotInTeamDomain>()).asStateFlow()
+    val accountsNotInTeam: Flow<PagingData<AccountsNotInTeamDomain>>
+        get() = _accountsNotInTeam
 
     private val clickedTeam =
         combine(teamRepository.teamId, teamRepository.teams) { id, map -> map[id] }
@@ -232,6 +251,7 @@ class TeamScreenModel(
             getTeam(id = it)
             observeTeamDetails()
             observeTeamRequests()
+            observeAccountsNotInTeam()
         }
     }
 
@@ -456,7 +476,12 @@ class TeamScreenModel(
             mutableState.update { it.copy(createInvitationState = update) }
             if (update is FetchState.Success) getInvitations()
             delay(5000)
-            mutableState.update { it.copy(createInvitationState = null, isInvitationSnackBarOpen = false) }
+            mutableState.update {
+                it.copy(
+                    createInvitationState = null,
+                    isInvitationSnackBarOpen = false,
+                )
+            }
         }
     }
 
@@ -525,8 +550,13 @@ class TeamScreenModel(
         mutableState.update { it.copy(isRequestsSheetOpen = false) }
     }
 
-    fun onClickInvitationGet() {
+    fun onClickRefreshInvitation() {
         getInvitations()
+        if (state.value.searchParam.isNotEmpty()) {
+            searchAccounts(state.value.searchParam)
+        } else {
+            observeAccountsNotInTeam()
+        }
     }
 
     fun onClickInvitationRetry() {
@@ -765,5 +795,94 @@ class TeamScreenModel(
         }
     }
 
+    private fun observeAccountsNotInTeam() {
+        val id = state.value.teamId ?: return
+        _accountsNotInTeam =
+            teamMemberInvitationRepository.getAccountsNotInTeam(teamId = id)
+                .cachedIn(screenModelScope)
+    }
+
+    fun onClickInviteAccount(accountNotInTeamDomain: AccountsNotInTeamDomain) {
+        val teamId = state.value.teamId ?: return
+        mutableState.update {
+            it.copy(
+                inviteAccountState =
+                    InviteAccountState(
+                        accountId = accountNotInTeamDomain.accountId,
+                        inviteState = FetchState.Loading,
+                    ),
+            )
+        }
+        screenModelScope.launch {
+            val result =
+                teamMemberInvitationRepository.sendAccountInvitation(
+                    teamId,
+                    accountNotInTeamDomain.accountId,
+                )
+
+            when (result) {
+                is DataResult.Error -> {
+                    mutableState.update {
+                        it.copy(
+                            inviteAccountState =
+                                InviteAccountState(
+                                    accountId = accountNotInTeamDomain.accountId,
+                                    inviteState = FetchState.Error(result.message),
+                                ),
+                            dialogState =
+                                DialogState.Error(
+                                    title = "Error",
+                                    message = result.message,
+                                ),
+                        )
+                    }
+                    delay(2000)
+                    mutableState.update {
+                        it.copy(
+                            inviteAccountState = null,
+                            dialogState = null,
+                        )
+                    }
+                }
+
+                is DataResult.Success -> {
+                    val invitedAccounts = state.value.accountsInvitedIds.toMutableList()
+                    invitedAccounts.add(accountNotInTeamDomain.accountId)
+                    mutableState.update {
+                        it.copy(
+                            inviteAccountState =
+                                InviteAccountState(
+                                    accountId = accountNotInTeamDomain.accountId,
+                                    inviteState = FetchState.Success(value = result.data),
+                                ),
+                        )
+                    }
+
+                    delay(2000)
+                    mutableState.update {
+                        it.copy(
+                            accountsInvitedIds = invitedAccounts,
+                            inviteAccountState = null,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun onSearchParamChanged(searchParam: String) {
+        mutableState.update { it.copy(searchParam = searchParam) }
+        searchAccounts(searchParam)
+    }
+
+    fun searchAccounts(searchParam: String) {
+        val teamId = state.value.teamId ?: return
+        _accountsNotInTeam = teamMemberInvitationRepository.searchForAccountNotInTeam(searchParam, teamId)
+    }
+
+    fun onClickClearSearch() {
+        mutableState.update { it.copy(searchParam = "") }
+        observeAccountsNotInTeam()
+    }
     // </editor-fold>
 }
