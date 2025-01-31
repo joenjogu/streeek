@@ -462,7 +462,7 @@ class TeamScreenModel(
         }
     }
 
-    // <editor-fold desc="team invitations">
+    // <editor-fold desc="team code invitations">
     private fun createInvitationCode() {
         val teamId = state.value.teamId ?: return
         screenModelScope.launch {
@@ -541,27 +541,6 @@ class TeamScreenModel(
                     isLoadingInvitationsPartially = false,
                 )
             }
-        }
-    }
-
-    private fun startCountDown(invite: TeamInvitationDomain) {
-        countDownJob?.cancel()
-        if (countDownJob == null) {
-            countDownJob =
-                screenModelScope.launch {
-                    var timeLeftInMinutes = invite.expiresAt.timeLeftInMinutes()
-                    val oneMinuteInMillis: Long = 60 * 1000
-                    while (timeLeftInMinutes != 0L) {
-                        mutableState.update {
-                            it.copy(
-                                expiryTimeToNow = timeLeftInMinutes.timeLeftAsString(),
-                            )
-                        }
-                        delay(oneMinuteInMillis)
-                        timeLeftInMinutes -= 1
-                    }
-                    countDownJob = null
-                }
         }
     }
 
@@ -821,7 +800,9 @@ class TeamScreenModel(
             }
         }
     }
+    // </editor-fold>
 
+    // <editor-fold desc="team account invitations">
     private fun observeAccountsNotInTeam() {
         val id = state.value.teamId ?: return
         _accountsNotInTeam =
@@ -985,6 +966,27 @@ class TeamScreenModel(
                     }
                 }
             }
+        }
+    }
+
+    private fun startCountDown(invite: TeamInvitationDomain) {
+        countDownJob?.cancel()
+        if (countDownJob == null) {
+            countDownJob =
+                screenModelScope.launch {
+                    var timeLeftInMinutes = invite.expiresAt.timeLeftInMinutes()
+                    val oneMinuteInMillis: Long = 60 * 1000
+                    while (timeLeftInMinutes != 0L) {
+                        mutableState.update {
+                            it.copy(
+                                expiryTimeToNow = timeLeftInMinutes.timeLeftAsString(),
+                            )
+                        }
+                        delay(oneMinuteInMillis)
+                        timeLeftInMinutes -= 1
+                    }
+                    countDownJob = null
+                }
         }
     }
     // </editor-fold>
