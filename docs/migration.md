@@ -68,6 +68,7 @@ Ensure thorough testing at **EVERY** stage:
 
 #### **Outcome**
 The app’s data layer is fully functional in the shared module and tested for both Android and iOS.
+
 ---
 
 ### **Weeks 2: Resources, UI, and Initial Features (9th - 15th March 2025)**
